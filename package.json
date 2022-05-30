@@ -1,0 +1,31 @@
+{
+  "name": "backend-full-stack-exam",
+  "version": "1.0.0",
+  "description": "backend-full-stack-exam",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/j87b0003/backend-full-stack-exam.git"
+  },
+  "keywords": [
+    "exam",
+    "backend"
+  ],
+  "author": "tiger",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/j87b0003/backend-full-stack-exam/issues"
+  },
+  "homepage": "https://github.com/j87b0003/backend-full-stack-exam#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "firebase": "^9.8.2",
+    "joi": "^17.6.0",
+    "moment": "^2.29.3"
+  }
+}
