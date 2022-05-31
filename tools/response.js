@@ -8,32 +8,32 @@ module.exports = res = {
         })
     },
     err: (resp, msg) => {
-        res.success(resp, {
+        res.send(resp, {
             code: 407,
             msg: res.msg('Exception Fail', msg)
         })
     },
     noResult: (resp) => {
-        res.success(resp, {
+        res.send(resp, {
             code: 404
         })
     },
     fieldValidationError: (resp, msg, errors) => {
-        res.success(resp, {
+        res.send(resp, {
             code: 451,
             msg: res.msg('Field Validation Error', msg),
             errors: errors
         })
     },
     dataValidationError: (resp, msg, type) => {
-        res.success(resp, {
+        res.send(resp, {
             code: 451,
             msg: res.msg('Data Validation Error', msg),
             type: type
         })
     },
     err: (resp, err) => {
-        res.success(resp, {
+        res.send(resp, {
             code: 407,
             msg: err
         })

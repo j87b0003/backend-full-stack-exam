@@ -1,12 +1,11 @@
 const _resp = require('./response')
-const _joi = require('joi')
+const _type = require('./type')
 
 module.exports = valid = {
     schema: (schema, data, resp, next) => {
-        const res = _joi.validate(data, schema, {
-            abortEarly: false
-        })
-        if (res.error !== null) {
+        const res = schema.validate(data)
+
+        if (_type.not.undef(res.error)) {
             let msg = '';
             let errors = [];
             res.error.details.forEach((obj, i) => {
@@ -14,13 +13,31 @@ module.exports = valid = {
                 msg += obj.message
                 errors.push(valid.errors(obj))
             })
-            _resp.validationError(resp, msg, errors)
+            _resp.fieldValidationError(resp, msg, errors)
+
         } else {
             next()
-            return
         }
     },
     data: (schema, req, resp, next) => {
         valid.schema(schema, req.body, resp, next)
+    },
+    errors: (err) => {
+        let e = {
+            key: err.context.key,
+            val: err.context.value
+        }
+        switch (err.type) {
+            case 'any.required':
+                e.type = 'required'
+                break
+            case 'string.regex.base':
+                e.type = 'regex'
+                break
+            case 'boolean.base':
+                e.type = 'type'
+                break
+        }
+        return e
     }
 }
