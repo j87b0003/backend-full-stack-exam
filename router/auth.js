@@ -5,8 +5,8 @@ const response = require('../tools/response')
 
 /**
  * POST Email sign up
- * @params email: string
- * @params password: string
+ * @data email: string
+ * @data password: string
  */
 router.post('/email/signup',
     middlewares.auth.valid.field.login,
@@ -24,8 +24,8 @@ router.post('/email/signup',
 
 /**
  * POST Email login
- * @params email: string
- * @params password: string
+ * @data email: string
+ * @data password: string
  */
 router.post('/email/login',
     middlewares.auth.valid.field.login,
@@ -41,4 +41,13 @@ router.post('/email/login',
     }
 )
 
+/**
+ * GET Email verify
+ * @params id: string
+ * @params verifyToken: string
+ */
+ router.get('/email/verify/:id/:verifyToken',
+ async (req, resp) => {
+ }
+)
 module.exports = router

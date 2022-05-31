@@ -54,7 +54,7 @@ module.exports = user = {
 
             const pg = database.pg()
             pg.query(`SELECT * FROM users WHERE email = $1 AND password = $2`,
-            [data.email, data.password],
+                [data.email, data.password],
                 (err, results) => {
                     pg.end()
                     if (err) {
@@ -70,16 +70,17 @@ module.exports = user = {
         return new Promise((resolve, reject) => {
 
             const pg = database.pg()
-            pg.query(`INSERT INTO users (email, password, verifyToken) VALUES ($1, $2, $3) RETURNING id, email`,
-                [data.email, data.password, data.verifyToken],
-                (err, results) => {
-                    pg.end()
-                    if (err) {
-                        reject(err)
-                    } else {
-                        resolve(results.rows[0])
-                    }
-                })
+            resolve({id:1})
+            // pg.query(`INSERT INTO users (email, password, verifyToken) VALUES ($1, $2, $3) RETURNING *`,
+            //     [data.email, data.password, data.verifyToken],
+            //     (err, results) => {
+            //         pg.end()
+            //         if (err) {
+            //             reject(err)
+            //         } else {
+            //             resolve(results.rows[0])
+            //         }
+            //     })
 
         })
     }

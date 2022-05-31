@@ -7,6 +7,7 @@ const response = require('../tools/response')
 const valid = require('../tools/valid')
 const type = require('../tools/type')
 const token = require('../tools/token')
+const email = require('../tools/email')
 
 const PASSWORD_RULE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/
 
@@ -57,12 +58,14 @@ module.exports = middlewares = {
                     let data = req.body.data
 
                     User.getByEmail(data.email).then(doc => {
-                        
+
                         if (type.is.undef(doc)) {
                             data.verifyToken = crypto.createHash('md5').update(moment().valueOf().toString()).digest('hex')
 
                             User.create(data).then(doc1 => {
                                 req.passData.user = doc1
+
+                                email.verify(data.email, doc1.id, data.verifyToken)
                                 next()
                             }).catch(err => {
                                 response.err(resp, err)
@@ -100,7 +103,7 @@ module.exports = middlewares = {
             const user = req.passData.user
             const accessToken = token.signForUser(user)
 
-            LoginUser.create(user.id, accessToken).then(() =>{
+            LoginUser.create(user.id, accessToken).then(() => {
                 req.passData.accessToken = accessToken
                 next()
             }).catch(err => {
