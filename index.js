@@ -20,4 +20,7 @@ app.use('/auth', require('./router/auth'))
 app.use('/user', require('./router/user'))
 app.use('/statistics', require('./router/statistics'))
 
-app.listen(process.env.PORT || 5000)
+app.listen(process.env.PORT || 5000, () => {
+    console.log('Server is running: ' + process.env.PORT);
+    console.log(process.env.DATABASE_URL);
+})
