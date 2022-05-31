@@ -36,7 +36,9 @@ module.exports = database = {
     pg: () => {
         const client = new Client({
             connectionString: process.env.HEROKU_POSTGRESQL_IVORY_URL || 'postgresql://postgres:@localhost:5432/backend-exam',
-            ssl: process.env.HEROKU_POSTGRESQL_IVORY_URL ? true : false
+            ssl: {
+                rejectUnauthorized: false
+            }
         })
         client.connect()
 
