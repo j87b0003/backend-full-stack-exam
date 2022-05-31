@@ -6,7 +6,6 @@ const middlewares = require('./middlewares/middlewares')
 const database = require('./tools/database')
 
 // Config
-_dotEnv.config()
 app.use(express.json())
 app.use(cors({
     credentials: true,
