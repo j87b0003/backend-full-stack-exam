@@ -1,11 +1,10 @@
-const _database = require('../tools/database')
-const _crypto = require('crypto')
+const database = require('../tools/database')
 
 module.exports = user = {
     getAll: () => {
         return new Promise((resolve, reject) => {
 
-            const pg = _database.pg()
+            const pg = database.pg()
             pg.query(`SELECT id, email FROM users ORDER BY id ASC`, (err, results) => {
                 if (err) {
                     reject(err)
@@ -19,7 +18,7 @@ module.exports = user = {
     getById: (id) => {
         return new Promise((resolve, reject) => {
 
-            const pg = _database.pg()
+            const pg = database.pg()
             pg.query(`SELECT * FROM users WHERE id = $1`,
                 [id],
                 (err, results) => {
@@ -36,7 +35,7 @@ module.exports = user = {
     getByEmail: (email) => {
         return new Promise((resolve, reject) => {
 
-            const pg = _database.pg()
+            const pg = database.pg()
             pg.query(`SELECT * FROM users WHERE email = $1`,
                 [email],
                 (err, results) => {
@@ -53,9 +52,9 @@ module.exports = user = {
     getByLogin: (data) => {
         return new Promise((resolve, reject) => {
 
-            const pg = _database.pg()
+            const pg = database.pg()
             pg.query(`SELECT * FROM users WHERE email = $1 AND password = $2`,
-                [data.email, user.crypto(data.password)],
+            [data.email, data.password],
                 (err, results) => {
                     pg.end()
                     if (err) {
@@ -70,9 +69,9 @@ module.exports = user = {
     create: (data) => {
         return new Promise((resolve, reject) => {
 
-            const pg = _database.pg()
-            pg.query(`INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id`,
-                [data.email, user.crypto(data.password)],
+            const pg = database.pg()
+            pg.query(`INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id, email`,
+                [data.email, data.password],
                 (err, results) => {
                     pg.end()
                     if (err) {
@@ -83,8 +82,5 @@ module.exports = user = {
                 })
 
         })
-    },
-    crypto: (password) => {
-        return _crypto.createHash('sha256').update(password).digest('hex')
     }
 }

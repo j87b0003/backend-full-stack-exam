@@ -1,11 +1,11 @@
-const _resp = require('./response')
-const _type = require('./type')
+const response = require('./response')
+const type = require('./type')
 
 module.exports = valid = {
     schema: (schema, data, resp, next) => {
         const res = schema.validate(data)
 
-        if (_type.not.undef(res.error)) {
+        if (type.not.undef(res.error)) {
             let msg = '';
             let errors = [];
             res.error.details.forEach((obj, i) => {
@@ -13,7 +13,7 @@ module.exports = valid = {
                 msg += obj.message
                 errors.push(valid.errors(obj))
             })
-            _resp.fieldValidationError(resp, msg, errors)
+            response.fieldValidationError(resp, msg, errors)
 
         } else {
             next()

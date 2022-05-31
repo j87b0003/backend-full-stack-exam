@@ -1,4 +1,4 @@
-const _type = require('./type')
+const type = require('./type')
 
 module.exports = res = {
     success: (resp, data) => {
@@ -40,7 +40,7 @@ module.exports = res = {
     },
     msg: (title, msg) => {
         if (msg) {
-            if (_type.not.str(msg)) {
+            if (type.not.str(msg)) {
                 msg = msg.toString()
             }
             title += ': ' + msg

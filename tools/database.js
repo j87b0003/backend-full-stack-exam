@@ -4,14 +4,16 @@ module.exports = database = {
     init: () => {
         const pg = database.pg()
 
-        // create Users
+        // init table Users
         pg.query(`
-            CREATE EXTENSION IF NOT EXISTS pgcrypto;
+            DROP TYPE IF EXISTS oauth_type;
+            CREATE TYPE oauth_type AS ENUM ('email', 'google', 'facebook');
             CREATE TABLE IF NOT EXISTS users (
                 id SERIAL NOT NULL,
                 email TEXT NOT NULL,
                 password TEXT,
-                loginCount INT NOT NULL DEFAULT 1,
+                name TEXT,
+                authType oauth_type NOT NULL DEFAULT 'email',
                 createdTime TIMESTAMP DEFAULT NOW(),
                 updatedTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
@@ -19,6 +21,16 @@ module.exports = database = {
                 UNIQUE (email)
             )`)
 
+        // init table Login User
+        pg.query(`
+        CREATE TABLE IF NOT EXISTS loginUser (
+            id SERIAL NOT NULL,
+            userId TEXT NOT NULL,
+            accessToken TEXT NOT NULL,
+            loginTime TIMESTAMP DEFAULT NOW(),
+
+            PRIMARY KEY (id)
+        )`)
 
     },
     pg: () => {

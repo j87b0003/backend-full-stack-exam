@@ -1,22 +1,44 @@
-const _express = require('express')
-const _router = _express.Router()
-const _middlewares = require('../middlewares/middlewares')
+const express = require('express')
+const router = express.Router()
+const middlewares = require('../middlewares/middlewares')
+const response = require('../tools/response')
 
-_router.post('/email/signup',
-    _middlewares.valid.field.login,
-    _middlewares.valid.data.email.signup,
-    _middlewares.user.signup,
+/**
+ * POST Email sign up
+ * @params email: string
+ * @params password: string
+ */
+router.post('/email/signup',
+    middlewares.auth.valid.field.login,
+    middlewares.auth.data.format,
+    middlewares.auth.valid.data.email.signup,
+    middlewares.auth.get.accessToken,
     async (req, resp) => {
-        console.log(1234)
+        response.success(resp, {
+            info: {
+                accessToken: req.passData.accessToken
+            } 
+        })
     }
 )
 
-_router.post('/email/login',
-    _middlewares.valid.field.login,
-    _middlewares.valid.data.email.login,
+/**
+ * POST Email login
+ * @params email: string
+ * @params password: string
+ */
+router.post('/email/login',
+    middlewares.auth.valid.field.login,
+    middlewares.auth.data.format,
+    middlewares.auth.valid.data.email.login,
+    middlewares.auth.get.accessToken,
     async (req, resp) => {
-        console.log(123)
+        response.success(resp, {
+            info: {
+                accessToken: req.passData.accessToken
+            } 
+        })
     }
 )
 
-module.exports = _router
+module.exports = router
