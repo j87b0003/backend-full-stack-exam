@@ -1,16 +1,19 @@
 // Import
 const express = require('express')
-const _cors = require('cors')
-const _dotEnv = require('dotenv')
+const cors = require('cors')
 const app = express()
 const middlewares = require('./middlewares/middlewares')
-const _database = require('./tools/database')
+const database = require('./tools/database')
 
 // Config
 _dotEnv.config()
 app.use(express.json())
-app.use(_cors())
-_database.init()
+app.use(cors({
+    credentials: true,
+    origin: true
+}))
+app.options('*', cors());
+database.init()
 
 // Route
 app.use('/auth', middlewares.init)
