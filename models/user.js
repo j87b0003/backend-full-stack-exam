@@ -70,8 +70,8 @@ module.exports = user = {
         return new Promise((resolve, reject) => {
 
             const pg = database.pg()
-            pg.query(`INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id, email`,
-                [data.email, data.password],
+            pg.query(`INSERT INTO users (email, password, verifyToken) VALUES ($1, $2, $3) RETURNING id, email`,
+                [data.email, data.password, data.verifyToken],
                 (err, results) => {
                     pg.end()
                     if (err) {

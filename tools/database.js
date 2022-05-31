@@ -6,14 +6,14 @@ module.exports = database = {
 
         // init table Users
         pg.query(`
-            DROP TYPE IF EXISTS oauth_type;
-            CREATE TYPE oauth_type AS ENUM ('email', 'google', 'facebook');
             CREATE TABLE IF NOT EXISTS users (
                 id SERIAL NOT NULL,
                 email TEXT NOT NULL,
                 password TEXT,
                 name TEXT,
-                authType oauth_type NOT NULL DEFAULT 'email',
+                authType VARCHAR NOT NULL DEFAULT 'email',
+                verify BOOLEAN NOT NULL DEFAULT false,
+                verifyToken TEXT NOT NULL,
                 createdTime TIMESTAMP DEFAULT NOW(),
                 updatedTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
@@ -35,10 +35,8 @@ module.exports = database = {
     },
     pg: () => {
         const client = new Client({
-            connectionString: process.env.HEROKU_POSTGRESQL_IVORY_URL || 'postgresql://postgres:@localhost:5432/backend-exam',
-            ssl: {
-                rejectUnauthorized: false
-            }
+            connectionString: process.env.HEROKU_POSTGRESQL_IVORY_URL || 'postgresql://localhost:5432/backend-exam',
+            ssl: (process.env.HEROKU_POSTGRESQL_IVORY_URL) ? { rejectUnauthorized: false } : false
         })
         client.connect()
 

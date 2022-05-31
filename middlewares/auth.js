@@ -1,5 +1,6 @@
 const joi = require('joi')
 const crypto = require('crypto')
+const moment = require('moment')
 const User = require('../models/user')
 const LoginUser = require('../models/loginUser')
 const response = require('../tools/response')
@@ -53,11 +54,13 @@ module.exports = middlewares = {
         data: {
             email: {
                 signup: async (req, resp, next) => {
-                    const data = req.body.data
+                    let data = req.body.data
 
                     User.getByEmail(data.email).then(doc => {
-
+                        
                         if (type.is.undef(doc)) {
+                            data.verifyToken = crypto.createHash('md5').update(moment().valueOf().toString()).digest('hex')
+
                             User.create(data).then(doc1 => {
                                 req.passData.user = doc1
                                 next()
