@@ -22,5 +22,5 @@ app.use('/statistics', require('./router/statistics'))
 
 app.listen(process.env.PORT || 5000, () => {
     console.log('Server is running: ' + process.env.PORT);
-    console.log(process.env.DATABASE_URL);
+    console.log(process.env.HEROKU_POSTGRESQL_IVORY_URL);
 })
