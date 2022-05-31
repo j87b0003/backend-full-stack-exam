@@ -37,5 +37,8 @@
     "mongoose-schema-jsonschema": "^2.0.2",
     "pg": "^8.7.3",
     "webpack": "^5.72.1"
+  },
+  "devDependencies": {
+    "webpack-cli": "^4.9.2"
   }
 }
