@@ -39,17 +39,6 @@ module.exports = middlewares = {
                 })
 
                 valid.data(schema, req, resp, next)
-            },
-            resetPassword: async (req, resp, next) => {
-                const schema = joi.object().keys({
-                    data: joi.object().keys({
-                        oldPassword: joi.string().required(),
-                        newPassword: joi.string().regex(PASSWORD_RULE).required(),
-                        reenterPassowrd: joi.string().required()
-                    }).required()
-                })
-
-                valid.data(schema, req, resp, next)
             }
         },
         data: {
@@ -71,7 +60,7 @@ module.exports = middlewares = {
                                 response.err(resp, err)
                             })
                         } else {
-                            response.dataValidationError(resp, 'Email is exists.')
+                            response.dataValidationError(resp, `Email is exists.`)
                         }
 
                     }).catch(err => {
@@ -88,7 +77,7 @@ module.exports = middlewares = {
                             req.passData.user = doc
                             next()
                         } else {
-                            response.dataValidationError(resp, 'Email is not exists or password incorrect.')
+                            response.dataValidationError(resp, `Email is not exists or password incorrect.`)
                         }
 
                     }).catch(err => {

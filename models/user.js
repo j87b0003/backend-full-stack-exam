@@ -1,11 +1,13 @@
 const database = require('../tools/database')
 
+const field = `id, email, name, verify, createdTime, updatedTime`
+
 module.exports = user = {
     getAll: () => {
         return new Promise((resolve, reject) => {
 
             const pg = database.pg()
-            pg.query(`SELECT * FROM users ORDER BY id ASC`, (err, results) => {
+            pg.query(`SELECT ` + field + ` FROM users ORDER BY id ASC`, (err, results) => {
                 pg.end()
 
                 if (err) {
@@ -21,7 +23,7 @@ module.exports = user = {
         return new Promise((resolve, reject) => {
 
             const pg = database.pg()
-            pg.query(`SELECT * FROM users WHERE id = $1`,
+            pg.query(`SELECT ` + field + ` FROM users WHERE id = $1`,
                 [id],
                 (err, results) => {
                     pg.end()
@@ -39,7 +41,7 @@ module.exports = user = {
         return new Promise((resolve, reject) => {
 
             const pg = database.pg()
-            pg.query(`SELECT * FROM users WHERE email = $1`,
+            pg.query(`SELECT ` + field + ` FROM users WHERE email = $1`,
                 [email],
                 (err, results) => {
                     pg.end()
@@ -57,7 +59,7 @@ module.exports = user = {
         return new Promise((resolve, reject) => {
 
             const pg = database.pg()
-            pg.query(`SELECT * FROM users WHERE email = $1 AND password = $2`,
+            pg.query(`SELECT ` + field + ` FROM users WHERE email = $1 AND password = $2`,
                 [data.email, data.password],
                 (err, results) => {
                     pg.end()
@@ -75,7 +77,7 @@ module.exports = user = {
         return new Promise((resolve, reject) => {
 
             const pg = database.pg()
-            pg.query(`INSERT INTO users (email, password, verifyToken) VALUES ($1, $2, $3) RETURNING *`,
+            pg.query(`INSERT INTO users (email, password, verifyToken) VALUES ($1, $2, $3) RETURNING ` + field,
                 [data.email, data.password, data.verifyToken],
                 (err, results) => {
                     pg.end()
@@ -102,7 +104,7 @@ module.exports = user = {
                 data += ` ` + key + ` = '` + value + `'`
             })
 
-            pg.query(`UPDATE users SET ` + data + ` WHERE id = $1`,
+            pg.query(`UPDATE users SET ` + data + ` WHERE id = $1 RETURNING ` + field,
                 [id],
                 (err, results) => {
                     pg.end()

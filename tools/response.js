@@ -32,12 +32,6 @@ module.exports = res = {
             type: type
         })
     },
-    err: (resp, err) => {
-        res.send(resp, {
-            code: 407,
-            msg: err
-        })
-    },
     msg: (title, msg) => {
         if (msg) {
             if (type.not.str(msg)) {

@@ -17,7 +17,7 @@ database.init()
 // Route
 app.use('/auth', middlewares.init)
 app.use('/auth', require('./router/auth'))
-app.use('/user', require('./router/user'))
+app.use('/user', middlewares.valid.field.token, middlewares.verifyAccessToken, require('./router/user'))
 app.use('/statistics', require('./router/statistics'))
 
 app.listen(process.env.PORT || 5000, () => {
