@@ -6,8 +6,8 @@ module.exports = email = {
     nodemailerMailgun: nodemailer.createTransport(
         mg({
             auth: {
-                api_key: process.env.MAILGUN_API_KEY || '4a915b8dbb6119d450feb8fd6f1ddedc-27a562f9-e944cf56',
-                domain: process.env.MAILGUN_DOMAIN || 'sandboxa6b27a68caea4cdda4cfd6159322aab1.mailgun.org'
+                api_key: process.env.MAILGUN_API_KEY || 'b00baa8f49f14b588741db879dcdd4e0-27a562f9-038b7024',
+                domain: process.env.MAILGUN_DOMAIN || 'sandboxfb28f76b91d84c28af45eaad46a7fc6e.mailgun.org'
             }
         })
     ),

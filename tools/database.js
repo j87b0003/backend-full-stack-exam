@@ -11,9 +11,10 @@ module.exports = database = {
                 email TEXT NOT NULL,
                 password TEXT,
                 name TEXT,
-                authType VARCHAR NOT NULL DEFAULT 'email',
                 verify BOOLEAN NOT NULL DEFAULT false,
-                verifyToken TEXT NOT NULL,
+                verifyToken TEXT,
+                googleAccessToken TEXT,
+                facebookAccessToken TEXT,
                 createdTime TIMESTAMP DEFAULT NOW(),
                 updatedTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 

@@ -5,7 +5,9 @@ module.exports = user = {
         return new Promise((resolve, reject) => {
 
             const pg = database.pg()
-            pg.query(`SELECT id, email FROM users ORDER BY id ASC`, (err, results) => {
+            pg.query(`SELECT * FROM users ORDER BY id ASC`, (err, results) => {
+                pg.end()
+
                 if (err) {
                     reject(err)
                 } else {
@@ -23,6 +25,7 @@ module.exports = user = {
                 [id],
                 (err, results) => {
                     pg.end()
+
                     if (err) {
                         reject(err)
                     } else {
@@ -40,6 +43,7 @@ module.exports = user = {
                 [email],
                 (err, results) => {
                     pg.end()
+
                     if (err) {
                         reject(err)
                     } else {
@@ -57,6 +61,7 @@ module.exports = user = {
                 [data.email, data.password],
                 (err, results) => {
                     pg.end()
+
                     if (err) {
                         reject(err)
                     } else {
@@ -74,12 +79,69 @@ module.exports = user = {
                 [data.email, data.password, data.verifyToken],
                 (err, results) => {
                     pg.end()
+
                     if (err) {
                         reject(err)
                     } else {
                         resolve(results.rows[0])
                     }
                 })
+
+        })
+    },
+    updateById: (id, obj) => {
+        return new Promise((resolve, reject) => {
+
+            const pg = database.pg()
+
+            let data = ``
+            Object.entries(obj).forEach(([key, value], index) => {
+                if (index > 0) {
+                    data += `,`
+                }
+                data += ` ` + key + ` = '` + value + `'`
+            })
+
+            pg.query(`UPDATE users SET ` + data + ` WHERE id = $1`,
+                [id],
+                (err, results) => {
+                    pg.end()
+
+                    if (err) {
+                        reject(err)
+                    } else {
+                        resolve(results.rows[0])
+                    }
+                }
+            )
+
+        })
+    },
+    searchByObject: (obj) => {
+        return new Promise((resolve, reject) => {
+
+            const pg = database.pg()
+
+            let where = ``
+            Object.entries(obj).forEach(([key, value], index) => {
+                if (index > 0) {
+                    where += ` AND`
+                }
+                where += ` ` + key + ` = '` + value + `'`
+            })
+            where += ` LIMIT 1`
+
+            pg.query(`SELECT * FROM users WHERE` + where,
+                (err, results) => {
+                    pg.end()
+
+                    if (err) {
+                        reject(err)
+                    } else {
+                        resolve(results.rows[0])
+                    }
+                }
+            )
 
         })
     }

@@ -1,7 +1,9 @@
 const express = require('express')
 const router = express.Router()
+const User = require('../models/user')
 const middlewares = require('../middlewares/middlewares')
 const response = require('../tools/response')
+const type = require('../tools/type')
 
 /**
  * POST Email sign up
@@ -17,7 +19,7 @@ router.post('/email/signup',
         response.success(resp, {
             info: {
                 accessToken: req.passData.accessToken
-            } 
+            }
         })
     }
 )
@@ -36,7 +38,7 @@ router.post('/email/login',
         response.success(resp, {
             info: {
                 accessToken: req.passData.accessToken
-            } 
+            }
         })
     }
 )
@@ -46,8 +48,39 @@ router.post('/email/login',
  * @params id: string
  * @params verifyToken: string
  */
- router.get('/email/verify/:id/:verifyToken',
- async (req, resp) => {
- }
+router.get('/email/verify/:id/:verifyToken',
+    async (req, resp) => {
+        let obj = req.params
+
+        resp.set('Content-Type', 'text/html')
+        User.searchByObject(obj).then(doc => {
+
+            if (type.not.undef(doc)) {
+
+                User.updateById(obj.id, { verify: true }).then(() => {
+
+                    resp.send(`<h2>Your email is confirmed.</h2>`)
+                    
+                }).catch(err => {
+
+                    resp.send(
+                        `<h2>OOOOOOOOPS</h2>` +
+                        `<h5>Something is Wrong</h5>` +
+                        `<h5>` + err + `</h5>`
+                    )
+                })
+
+            } else {
+                resp.send(`<h2>Your email is NOT confirmed.</h2>`)
+            }
+
+        }).catch(err => {
+            resp.send(
+                `<h2>OOOOOOOOPS</h2>` +
+                `<h5>Something is Wrong</h5>` +
+                `<h5>` + err + `</h5>`
+            )
+        })
+    }
 )
 module.exports = router
