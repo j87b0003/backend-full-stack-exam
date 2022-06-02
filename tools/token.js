@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const moment = require("moment")
+const moment = require('moment')
 
 const SERVICE_TOKEN = `ACBED0D621782945E8DD1B06EE569340`
 module.exports = token = {

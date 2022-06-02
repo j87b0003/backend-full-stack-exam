@@ -3,6 +3,7 @@ const router = express.Router()
 const middlewares = require('../middlewares/middlewares')
 const response = require('../tools/response')
 const User = require('../models/user')
+const email = require('../tools/email')
 
 /**
  * GET User info
@@ -18,12 +19,31 @@ router.get('/info',
 )
 
 /**
-* POST Reset password
-* @data oldPassword: string
-* @data password: string
-*/
+ * get Send verify email
+ * @header accessToken: string
+ */
+router.get('/sendVerifyEmail',
+middlewares.user.data.get,
+    async (req, resp) => {
+        const user = req.passData.user
+
+        email.verify(user.email, user.id, user.verifyToken)
+
+        response.success(resp, {
+            info: user
+        })
+
+    }
+)
+
+/**
+ * POST Reset password
+ * @data oldPassword: string
+ * @data password: string
+ */
 router.post('/resetPassword',
     middlewares.user.valid.field.resetPassword,
+    middlewares.user.data.format,
     middlewares.user.valid.data.oldPassword,
     async (req, resp) => {
         const data = req.body.data

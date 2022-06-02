@@ -1,5 +1,8 @@
+const joi = require('joi')
 const crypto = require('crypto')
+const moment = require('moment')
 const User = require('../models/user')
+const LoginUser = require('../models/loginUser')
 const response = require('../tools/response')
 const type = require('../tools/type')
 
@@ -28,9 +31,16 @@ module.exports = middlewares = {
             User.getById(userId).then(doc => {
 
                 if (type.not.undef(doc)) {
-                    req.passData.user = doc
-
-                    next()
+                    User.updateById(userId, { updatedTime: moment().format() }).then(() => { }).catch(() => { })
+                    console.log(moment().format() )
+                    LoginUser.getLoginCountById(userId).then(count => {
+                        req.passData.user = doc
+                        req.passData.user.loginCount = count
+                        
+                        next()
+                    }).catch(err => {
+                        response.err(resp, err)
+                    })
                 } else {
                     response.dataValidationError(resp, 'User is not exists.')
                 }
@@ -69,8 +79,8 @@ module.exports = middlewares = {
                     }
 
                 }).catch(err => {
-                        response.err(resp, err)
-                    })
+                    response.err(resp, err)
+                })
             }
         }
     }

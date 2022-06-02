@@ -1,6 +1,6 @@
 const database = require('../tools/database')
 
-const field = `id, email, name, verify, createdTime, updatedTime`
+const field = `id, email, name, verify, verifyToken, createdTime, updatedTime`
 
 module.exports = user = {
     getAll: () => {
@@ -68,6 +68,24 @@ module.exports = user = {
                         reject(err)
                     } else {
                         resolve(results.rows[0])
+                    }
+                })
+
+        })
+    },
+    getTotalOfActiveSession: (day = 0) => {
+        return new Promise((resolve, reject) => {
+
+            const pg = database.pg()
+            pg.query(`SELECT * FROM users WHERE updatedtime > (CURRENT_DATE - CAST($1 AS INTEGER))`,
+                [day],
+                (err, results) => {
+                    pg.end()
+
+                    if (err) {
+                        reject(err)
+                    } else {
+                        resolve(results.rows)
                     }
                 })
 

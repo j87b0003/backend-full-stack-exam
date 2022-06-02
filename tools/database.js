@@ -1,9 +1,15 @@
+const dotenv = require('dotenv')
 const { Client } = require('pg')
+
+dotenv.config()
 
 module.exports = database = {
     init: () => {
         const pg = database.pg()
 
+        // set timezone
+        pg.query(`SET TIMEZONE='UTC'`)
+        
         // init table Users
         pg.query(`
             CREATE TABLE IF NOT EXISTS users (
@@ -15,7 +21,7 @@ module.exports = database = {
                 verifyToken TEXT,
                 googleAccessToken TEXT,
                 facebookAccessToken TEXT,
-                createdTime TIMESTAMP DEFAULT NOW(),
+                createdTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 updatedTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
                 PRIMARY KEY (id),
