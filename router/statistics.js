@@ -57,16 +57,17 @@ router.get('/activeSessionTotal',
  */
 router.get('/activeSessionAverage',
     async (req, resp) => {
+        const DAYS = 7
         let count = 0
 
-        User.getTotalOfActiveSession(7).then(list => {
+        User.getTotalOfActiveSession(DAYS).then(list => {
 
             if (type.not.undef(list)) {
                 count = list.length
             }
             response.success(resp, {
                 info: {
-                    number: count / 7
+                    number: count / DAYS
                 }
             })
         }).catch(err => {
