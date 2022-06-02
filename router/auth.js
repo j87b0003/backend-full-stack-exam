@@ -58,7 +58,7 @@ router.get('/email/verify/:id/:verifyToken',
 
             if (type.not.undef(doc)) {
 
-                User.updateById(obj.id, { verify: true, updatedTime: moment().valueOf() }).then(() => {
+                User.updateById(obj.id, { verify: true, updatedTime: moment().format() }).then(() => {
 
                     resp.send(`<h2>Your email is confirmed.</h2>`)
 

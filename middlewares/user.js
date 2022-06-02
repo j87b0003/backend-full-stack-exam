@@ -32,7 +32,7 @@ module.exports = middlewares = {
 
                 if (type.not.undef(doc)) {
                     User.updateById(userId, { updatedTime: moment().format() }).then(() => { }).catch(() => { })
-                    console.log(moment().format() )
+
                     LoginUser.getLoginCountById(userId).then(count => {
                         req.passData.user = doc
                         req.passData.user.loginCount = count
