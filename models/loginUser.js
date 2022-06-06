@@ -1,3 +1,4 @@
+const type = require('../tools/type')
 const database = require('../tools/database')
 
 module.exports = loginUser = {

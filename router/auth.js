@@ -60,28 +60,41 @@ router.get('/email/verify/:id/:verifyToken',
 
                 User.updateById(obj.id, { verify: true, updatedTime: moment().format() }).then(() => {
 
-                    resp.send(`<h2>Your email is confirmed.</h2>`)
+                    resp.redirect('https://frontend-full-stack-exam.web.app/pages/confirmEmail')
 
                 }).catch(err => {
-
-                    resp.send(
-                        `<h2>OOOOOOOOPS</h2>` +
-                        `<h5>Something is Wrong</h5>` +
-                        `<h5>` + err + `</h5>`
-                    )
+                    resp.redirect('https://frontend-full-stack-exam.web.app/pages/error')
                 })
 
             } else {
-                resp.send(`<h2>Your email is NOT confirmed.</h2>`)
+                resp.redirect('https://frontend-full-stack-exam.web.app/pages/error')
             }
 
         }).catch(err => {
-            resp.send(
-                `<h2>OOOOOOOOPS</h2>` +
-                `<h5>Something is Wrong</h5>` +
-                `<h5>` + err + `</h5>`
-            )
+            resp.redirect('https://frontend-full-stack-exam.web.app/pages/error')
         })
     }
 )
+
+
+/**
+ * POST OAuth
+ * @data provider: string
+ * @data name: string
+ * @data email: string
+ */
+router.post('/OAuth',
+    middlewares.auth.valid.field.oauth,
+    middlewares.auth.get.oauth,
+    middlewares.auth.get.accessToken,
+    async (req, resp) => {
+        let info = req.passData.user
+        info.accessToken = req.passData.accessToken
+
+        response.success(resp, {
+            info: info
+        })
+    }
+)
+
 module.exports = router

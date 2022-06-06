@@ -23,7 +23,7 @@ module.exports = email = {
         }, (err, info) => {
 
             if (err) {
-                console.log(`Error: ${err}`);
+                console.log(`${err}`);
             }
             else {
                 console.log(`Response: ${JSON.stringify(info)}`);

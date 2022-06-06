@@ -27,7 +27,7 @@ module.exports = res = {
     },
     dataValidationError: (resp, msg, type) => {
         res.send(resp, {
-            code: 451,
+            code: 422,
             msg: res.msg('Data Validation Error', msg),
             type: type
         })

@@ -164,5 +164,39 @@ module.exports = user = {
             )
 
         })
+    },
+    conflictByOAuth: (obj) => {
+        return new Promise((resolve, reject) => {
+
+            const pg = database.pg()
+            let accessTokenField = ''
+
+            switch (obj.provider.toLowerCase()) {
+                case 'facebook':
+                    accessTokenField = 'facebookAccessToken'
+                    break
+                default:
+                    accessTokenField = 'googleAccessToken'
+            }
+
+            pg.query(`INSERT INTO users (` + accessTokenField + `, name, email, verify) VALUES ($1, $2, $3, true)
+                        ON CONFLICT (email) DO UPDATE 
+                        SET ` + accessTokenField + ` = excluded.` + accessTokenField + `,
+                            name = excluded.name,
+                            verify = true
+                        RETURNING ` + field,
+                [obj.accessToken, obj.name, obj.email],
+                (err, results) => {
+                    pg.end()
+
+                    if (err) {
+                        reject(err)
+                    } else {
+                        resolve(results.rows[0])
+                    }
+                }
+            )
+
+        })
     }
 }

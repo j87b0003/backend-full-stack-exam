@@ -5,8 +5,9 @@ const User = require('../models/user')
 const LoginUser = require('../models/loginUser')
 const response = require('../tools/response')
 const type = require('../tools/type')
+const valid = require('../tools/valid')
 
-const PASSWORD_RULE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/
+const PASSWORD_RULE = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}/
 
 module.exports = middlewares = {
     auth: require('./auth'),
@@ -35,7 +36,7 @@ module.exports = middlewares = {
 
                     LoginUser.getLoginCountById(userId).then(count => {
                         req.passData.user = doc
-                        req.passData.user.loginCount = count
+                        req.passData.user.loginCount = count || 0
                         
                         next()
                     }).catch(err => {

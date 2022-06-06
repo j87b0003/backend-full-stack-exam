@@ -8,6 +8,7 @@ const valid = require('../tools/valid')
 const type = require('../tools/type')
 const token = require('../tools/token')
 const email = require('../tools/email')
+const user = require('./user')
 
 const PASSWORD_RULE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/
 
@@ -35,6 +36,18 @@ module.exports = middlewares = {
                     data: joi.object().keys({
                         email: joi.string().email().trim().required(),
                         password: joi.string().regex(PASSWORD_RULE).required()
+                    }).required()
+                })
+
+                valid.data(schema, req, resp, next)
+            },
+            oauth: async (req, resp, next) => {
+                const schema = joi.object().keys({
+                    data: joi.object().keys({
+                        provider: joi.string().required(),
+                        email: joi.string().email().trim().required(),
+                        name: joi.string().required(),
+                        accessToken: joi.string().required()
                     }).required()
                 })
 
@@ -99,6 +112,15 @@ module.exports = middlewares = {
                 response.err(resp, err)
             })
 
+        },
+        oauth: async (req, resp, next) => {
+            const data = req.body.data
+            User.conflictByOAuth(data).then(doc =>{
+                req.passData.user = doc
+                next()
+            }).catch(err => {
+                response.err(resp, err)
+            })
         }
     }
 }
