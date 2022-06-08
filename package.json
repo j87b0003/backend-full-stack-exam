@@ -28,6 +28,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "express-jsdoc-swagger": "^1.6.8",
     "firebase": "^9.8.2",
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
@@ -36,7 +37,8 @@
     "mongoose-schema-jsonschema": "^2.0.2",
     "nodemailer": "^6.7.5",
     "nodemailer-mailgun-transport": "^2.1.4",
-    "pg": "^8.7.3"
+    "pg": "^8.7.3",
+    "swagger-jsdoc": "^6.2.1"
   },
   "devDependencies": {
     "webpack-cli": "^4.9.2"

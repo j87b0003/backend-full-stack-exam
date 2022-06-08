@@ -15,10 +15,12 @@ app.options('*', cors());
 database.init()
 
 // Route
-app.use('/auth', middlewares.init)
+app.use('*', middlewares.init)
 app.use('/auth', require('./router/auth'))
-app.use('/user', middlewares.valid.field.token, middlewares.verifyAccessToken, require('./router/user'))
+app.use('/docs', require('./router/docs'))
 app.use('/statistics', require('./router/statistics'))
+app.use('/user', middlewares.valid.field.token, middlewares.verifyAccessToken, require('./router/user'))
+
 
 app.listen(process.env.PORT || 5000, () => {
     console.log('Server is running.');
